@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/verse/chapter.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <title>Bhagavat Gita</title>
+    <style>
+      #hamburgerMenu a,
+      #hamburgerMenu button {
+        width: 100%;
+        text-align: left;
+      }
+      #scrollToTop {
+        display: none; /* Initially hidden */
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        background-color: #1f2937; /* Tailwind bg-gray-800 */
+        color: white;
+        padding: 0.5rem;
+        border-radius: 9999px; /* Tailwind rounded-full */
+        cursor: pointer;
+        z-index: 1000; /* Ensure it is above other elements */
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="scrollToTop"
+      class="hidden fixed bottom-4 right-4 bg-gray-800 text-white p-2 rounded-full cursor-pointer"
+    >
+      <svg
+        class="w-6 h-6"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 18a1 1 0 01-1-1V5.414l-3.293 3.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 01-1 1z"
+          clip-rule="evenodd"
+        ></path>
+      </svg>
+    </div>
+    <!-- navbar both small and big screen -->
+    <nav class="font-inter shadow bg-[#3E3232]" data-headlessui-state=" ">
+      <div class="mx-auto max-w-full px-2 sm:px-4 md:py-1 lg:px-8">
+        <div class="flex h-16 justify-between">
+          <!-- home content appearance option's -->
+          <div class="flex px-2 lg:px-0">
+            <div class="hidden items-center py-2 lg:flex lg:space-x-4">
+              <a
+                class="flex flex-col items-center rounded border-b-2 border-transparent p-2 text-sm font-medium text-gray-900 hover:bg-[#252525] dark:text-gray-50"
+                href="/mainPage/index.html"
+              >
+                <img
+                  alt="Home"
+                  loading="lazy"
+                  width="24"
+                  height="24"
+                  decoding="async"
+                  data-nimg="1"
+                  class="mb-1 h-6 w-6"
+                  src="/assets/Home.svg"
+                  style="color: transparent"
+                />Home
+              </a>
+              <button
+                id="contentButton"
+                type="button"
+                class="flex flex-col items-center rounded border-b-2 border-transparent p-2 text-sm font-medium text-current hover:bg-[#252525] text-white"
+              >
+                <img
+                  alt="Home"
+                  loading="lazy"
+                  width="24"
+                  height="24"
+                  decoding="async"
+                  data-nimg="1"
+                  class="mb-1 h-6 w-6"
+                  src="/assets/content.svg"
+                  style="color: transparent"
+                />Content
+              </button>
+              <button
+                type="button"
+                class="flex flex-col items-center rounded border-b-2 border-transparent p-2 text-sm font-medium text-current hover:bg-[#252525] text-white"
+              >
+                <img
+                  alt="Home"
+                  loading="lazy"
+                  width="24"
+                  height="24"
+                  decoding="async"
+                  data-nimg="1"
+                  class="mb-1 h-6 w-7"
+                  src="/assets/appearance.svg"
+                  style="color: transparent"
+                />Appearance
+              </button>
+            </div>
+          </div>
+
+          <!-- search bar, light-dark, flag content -->
+          <div
+            class="flex flex-1 items-center justify-start pr-2 lg:ml-6 lg:justify-end"
+          >
+            <!-- Search bar -->
+            <div class="w-full max-w-lg lg:max-w-xs">
+              <label for="search" class="sr-only">Search</label>
+              <form class="relative flex text-gray-600">
+                <button type="submit" class="absolute left-3 top-0 mr-4 mt-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    class="h-5 w-5 text-gray-400 dark:text-gray-50"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+                <input
+                  id="search"
+                  class="block w-full rounded-md border-none border-gray-300 bg-[#252525] py-2 pl-10 pr-3 leading-5 placeholder:text-gray-50 focus:border-orange-300 focus:outline-none focus:ring-1 focus:ring-orange-300 focus:placeholder:text-gray-400 sm:text-sm"
+                  placeholder="Search"
+                  type="search"
+                  value=""
+                  name="search"
+                />
+              </form>
+            </div>
+
+            <!--light and dark toggle -->
+            <button
+              aria-label="Toggle Dark Mode"
+              type="button"
+              class="group mx-2 h-10 w-10 rounded p-2 hover:bg-[#252525]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="hidden h-6 w-6 text-yellow-300 group-hover:text-yellow-600 dark:block"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  fill="currentColor"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                ></path>
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 group-hover:text-gray-50 dark:hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  fill="currentColor"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                ></path>
+              </svg>
+            </button>
+
+            <!-- flag toggle -->
+            <div class="relative w-16">
+              <div class="flex cursor-pointer">
+                <img
+                  alt="Flag for en locale"
+                  loading="lazy"
+                  width="30"
+                  height="20"
+                  decoding="async"
+                  data-nimg="1"
+                  src="/assets/en.svg"
+                  style="color: transparent"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="white"
+                  aria-hidden="true"
+                  class="ml-2 w-12 group-hover:text-black"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hamburger Menu only-button  Button -->
+          <div
+            class="lg:hidden py-3 flex flex-col items-center sm:12"
+            x-data="{ open: false }"
+          >
+            <div class="relative sm:max-w-xl mx-auto">
+              <nav x-data="{ open: false }">
+                <button
+                  id="hamburgerButton"
+                  class="text-gray-500 w-10 h-10 relative focus:outline-none bg-[#3E3232] hover:bg-white rounded focus:ring-1 focus:ring-orange-300"
+                  @click="open = !open"
+                >
+                  <span class="sr-only">Open main menu</span>
+                  <div
+                    class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
+                      :class="{'rotate-45': open,' -translate-y-1.5': !open }"
+                    ></span>
+                    <span
+                      aria-hidden="true"
+                      class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
+                      :class="{'opacity-0': open } "
+                    ></span>
+                    <span
+                      aria-hidden="true"
+                      class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
+                      :class="{'-rotate-45': open, ' translate-y-1.5': !open}"
+                    ></span>
+                  </div>
+                </button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hamburger Menu Items -->
+      <div id="hamburgerMenu" class="hidden lg:hidden bg-[#3E3232]">
+        <a
+          href="/mainPage/index.html"
+          class="block px-4 py-2 text-sm text-gray-200 hover:bg-[#252525]"
+          >Home</a
+        >
+        <button
+          id="contentButtonMobile"
+          class="block px-4 py-2 text-sm text-gray-200 hover:bg-[#252525]"
+        >
+          Content
+        </button>
+        <button
+          class="block px-4 py-2 text-sm text-gray-200 hover:bg-[#252525]"
+        >
+          Appearance
+        </button>
+      </div>
+    </nav>
+
+    <!-- Popup Card for large screen (initially hidden) -->
+    <div
+      id="popupCard"
+      class="hidden fixed inset-0 flex items-center justify-center bg-opacity-75 z-50"
+    >
+      <div class="max-w-4xl w-full bg-gray-800 rounded-[50px] shadow-lg flex">
+        <!-- Chapters List -->
+        <div class="flex flex-col w-1/2 bg-[#252525] p-4 rounded-l-[25px]">
+          <div class="bg-orange-400 text-black px-4 py-2 rounded-[50px]">
+            Chapters
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-2">
+            <div id="chaptersList1" class="space-y-2"></div>
+            <div id="chaptersList2" class="space-y-2"></div>
+          </div>
+        </div>
+        <!-- Verses List -->
+        <div
+          id="versesList"
+          class="w-1/2 bg-orange-100 text-gray-800 rounded-r-[25px] p-4 overflow-y-auto"
+        >
+          <div id="chapterTitle" class="font-bold text-orange-400 mb-2"></div>
+          <div id="versesContainer" class="grid grid-cols-7 gap-2 mt-4"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- popup card for small screen(initially hidden) -->
+    <!-- display div  -->
+    <div
+      id="popupCardSmall"
+      class="hidden fixed flex inset-0 items-center justify-center bg-opacity-75 z-50"
+    >
+      <!-- content div  -->
+      <div
+        class="inline-flex w-5/6 max-w-4xl overflow-hidden rounded-2xl bg-[#3E3232] text-left align-middle shadow-xl transition-all opacity-100 scale-100"
+      >
+        <div class="flex w-full flex-col p-8 md:hidden">
+          <!-- chapter option -->
+          <p class="text-orange-500 font-semibold py-2">Chapters</p>
+          <div class="mt-1">
+            <button
+              class="relative w-full cursor-pointer bg-[#252525] py-2 p-l-3 p-r-10 text-left shadow-md rounded-lg sm:text-sm"
+              id="chapterBtn"
+              type="button"
+            >
+              <span id="chapterListSm" class="block text-white pl-2 font-bold"
+                >Select Chapter</span
+              >
+              <span
+                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  class="h-5 w-5 text-gray-400"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </span>
+            </button>
+            <!-- dropdown to select chapter -->
+            <div
+              id="chapterDropdown"
+              class="hidden mt-1 w-full bg-[#252525] rounded-lg shadow-lg max-h-60 overflow-auto"
+            >
+              <ul id="chapterList" class="py-1 text-white"></ul>
+            </div>
+          </div>
+
+          <!-- verse option -->
+          <p class="text-orange-500 font-semibold py-2">Verses</p>
+          <div class="mt-1">
+            <button
+              class="relative w-full cursor-pointer bg-[#252525] py-2 p-l-3 p-r-10 text-left shadow-md rounded-lg sm:text-sm"
+              id="verseBtn"
+              type="button"
+            >
+              <span id="versesListSm" class="block text-white pl-2 font-bold"
+                >Select Verse</span
+              >
+              <span
+                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  class="h-5 w-5 text-gray-400"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </span>
+            </button>
+            <div
+              id="verseDropdown"
+              class="hidden mt-1 w-full bg-[#252525] rounded-lg shadow-lg max-h-60 overflow-auto"
+            >
+              <ul id="verseList" class="py-1 text-white"></ul>
+            </div>
+          </div>
+
+          <!-- Loading Screen -->
+          <div
+            id="loadingIndicator"
+            class="hidden flex items-center justify-center inset-0 bg-opacity-75 z-50"
+          >
+            <!-- hidden items-center justify-center absolute inset-0  -->
+            <img
+              src="/assets/Infinity@1x-1.0s-200px-200px (1).svg"
+              class="w-15"
+              alt=""
+            />
+          </div>
+
+          <!-- Lets GO button -->
+          <button
+            class="mx-auto mt-3 w-2/3 rounded bg-orange-500/80 px-4 py-2 font-bold text-white"
+          >
+            Lets Go
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- chapter detail and verse content load  -->
+    <!-- content div -->
+    <div id="chapter-detail-container" class="flex flex-col bg-[#1a1a1a]">
+      <!-- loader div -->
+      <div
+        id="loadingIndicator1"
+        class="hidden fixed inset-0 flex items-center justify-center p-4 sm:p-10 md:p-20 lg:p-40 xl:p-80 bg-opacity-75 z-50"
+      >
+        <img
+          src="/assets//Dual Ball@1x-1.0s-200px-200px (1).svg"
+          alt="Loading..."
+        />
+      </div>
+    </div>
+
+    <!-- verses Content -->
+    <div
+      id="verses"
+      class="flex flex-wrap justify-center bg-[#1a1a1a] space-y-4 z-50"
+    >
+      <!-- Cards will be appended here dynamically -->
+
+      <!-- loader -->
+      <div
+        id="loadingIndicator2"
+        class="hidden fixed inset-0 flex items-center justify-center p-4 sm:p-10 md:p-20 lg:p-40 xl:p-80 bg-opacity-75 z-50"
+      >
+        <img
+          src="/assets//Dual Ball@1x-1.0s-200px-200px (1).svg"
+          alt="Loading..."
+        />
+      </div>
+    </div>
+
+    <script type="module" src="./chapter.js"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer
+    ></script>
+    <script type="module" src="/mainPage/script.js"></script>
+  </body>
+</html>

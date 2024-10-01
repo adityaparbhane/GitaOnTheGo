@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom styles if needed */
+      .hover-outline {
+        outline: 2px solid #ccc;
+      }
+    </style>
+    <link rel="stylesheet" href="style.css" />
+    <title>Bhagavat gita</title>
+  </head>
+  <body>
+    <div class="flex min-h-screen flex-col bg-[#1a1a1a]">
+      <div class="relative font-serif bg-[#3E3232]">
+        <div
+          class="flex top-0 z-50 w-full item-center justify-between py-6 px-6"
+        >
+          <div class="flex justify-start lg:w-0 lg:flex-1">
+            <a
+              class="text-3xl font-bold focus:outline-none text-white"
+              href="/mainPage/index.html"
+            >
+              <!-- <span class="sr-only">Workflow</span> -->
+              Bhagavad Gita
+            </a>
+          </div>
+          <nav class="hidden space-x-10 md:flex">
+            <div class="relative">
+              <button
+                class="text-white group inline-flex items-center rounded-md bg-gray text-base font-medium hover:text-gray-500 focus:outline-none"
+                type="button"
+                aria-expanded="false"
+                id="chapter"
+              >
+                <span>Chapters</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  class="text-gray-500 ml-2 h-5 w-5 group-hover:text-gray-500 text-white"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <a
+              class="text-base font-medium text-white hover:text-gray-500 focus:outline-none"
+              href="/bhagavad-gita-quotes"
+              >Quotes</a
+            >
+            <a
+              class="text-base font-medium text-white hover:text-gray-500 focus:outline-none"
+              href="/about"
+              >About Gita</a
+            >
+          </nav>
+
+          <div
+            class="hidden w-auto items-center justify-end py-px md:flex md:flex-1 lg:w-0"
+          >
+            <form class="relative flex text-gray-600">
+              <button type="submit" class="absolute left-3 top-0 mr-4 mt-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  class="h-5 w-5 text-gray-400 dark:text-gray-50"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+              <input
+                id="search"
+                class="block w-full text-white rounded-md border border-gray-300 bg-[#3E3232] py-2 pl-10 pr-3 leading-5 placeholder:text-gray-50 focus:border-orange-300 focus:outline-none focus:ring-1 focus:ring-orange-300 focus:placeholder:text-gray-400"
+                placeholder="Search"
+                type="search"
+                name="search"
+                value=""
+              />
+            </form>
+            <button
+              aria-label="Toggle Dark Mode"
+              type="button"
+              class="group mx-2 h-10 w-10 rounded p-2 hover:bg-gray-900 hover:bg-[#3E3232]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="hidden h-6 w-6 text-yellow-300 group-hover:text-yellow-600 dark:block"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  fill="currentColor"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                ></path>
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 group-hover:text-gray-50 dark:hidden"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  fill="currentColor"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                ></path>
+              </svg>
+            </button>
+            <div class="relative w-16">
+              <div class="flex cursor-pointer">
+                <img
+                  alt="Flag for en locale"
+                  loading="lazy"
+                  width="30"
+                  height="20"
+                  decoding="async"
+                  data-nimg="1"
+                  style="color: transparent"
+                  src="/assets/en.svg"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="white"
+                  aria-hidden="true"
+                  class="ml-2 w-12 group-hover:text-black"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-1 lg:pt[90px]">
+        <div class="relative">
+          <div class="relative z-10 mx-auto h-[451px] max-w-7xl">
+            <img
+              alt="BG Home Banner Image"
+              class="shadow-xl xl:rounded-lg"
+              style="
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                object-fit: cover;
+                object-position: center;
+                color: transparent;
+              "
+              sizes="100vw"
+              class="shadow-xl xl:rounded-lg"
+              src="../assets/banner2.webp"
+            />
+            <div class="flex h-4/5 flex-col px-8 py-36 xl:rounded-lg">
+              <h1
+                class="text-shadow t-shadow z-30 text-center text-6xl font-extrabold text-white md-text-6xl"
+              >
+                Journey through the Gita <br />
+                <span class="text-[#fedf89]">Anywhere, Anytime</span>
+              </h1>
+              <a
+                href="1"
+                class="z-30 mx-auto mt-10 inline-flex max-w-max items-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-offset-2"
+                >Read Now</a
+              >
+            </div>
+          </div>
+
+          <div class="relative z-10 mx-auto mt-24 max-w-7xl px-4 sm:px-6">
+            <div
+              class="bg-[#3E3232] rounded-xl px-12 pb-8 pt-5 text-gray-400 shadow-lg"
+            >
+              <h2
+                class="divider line one-line mb-4 px-1 font-bold text-orange-400"
+              >
+                Phrase of the day - BG 4.12
+              </h2>
+              <p class="text-lg">
+                Those who long for success in action in this world sacrifice to
+                the gods; for success is quickly attained by men through action.
+              </p>
+              <button
+                class="mt-4 text-sm font-bold uppercase text-white hover:text-gray-400 focus:outline-none"
+              >
+                <a href="1">See more</a>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div>after api intigeration</div> -->
+        <div class="relative my-14">
+          <div class="z-50 mx-auto max-w-7xl px-4 sm:px-6">
+            <div>
+              <h2 class="mb-10 mt-7 text-4xl font-bold text-white">Chapter</h2>
+              <div
+                class="grid grid-cols-1 gap-4 md:grid-cols-2"
+                id="chapter-card-content"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

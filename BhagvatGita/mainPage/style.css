@@ -1,0 +1,31 @@
+/* body {
+  margin: 0;
+  padding: 0;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.navBar{
+  display: flex;
+}
+
+.heading{
+  font-size: 40px;
+  font-weight: 500;
+} */
+
+.one-line {
+  position: relative;
+  padding-bottom: 1em; /* space for the line */
+}
+
+.one-line::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: #e5e7eb;
+  margin: 0 0.2em;
+}
